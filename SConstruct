@@ -432,6 +432,16 @@ env.Prepend(
     ]
 )
 
+def use_system_version_of_library(name):
+    try:
+        return has_option('use-system-' + name)
+    except:
+        return False
+
+if not use_system_version_of_library("boost"):
+    env.Prepend(CPPPATH=['$BUILD_DIR/third_party/boost'],
+                CPPDEFINES=['BOOST_ALL_NO_LIB'])
+
 extraLibPlaces = []
 
 env['EXTRACPPPATH'] = []
@@ -1083,9 +1093,9 @@ def doConfigure(myenv):
     conf = Configure(myenv)
     libdeps.setup_conftests(conf)
 
-    if not conf.CheckCXXHeader( "boost/version.hpp" ):
-        print( "can't find boost headers" )
-        Exit(1)
+    # if not conf.CheckCXXHeader( "boost/version.hpp" ):
+        # print( "can't find boost headers" )
+        # Exit(1)
 
     conf.env.Append(CPPDEFINES=[("BOOST_THREAD_VERSION", "2")])
 
@@ -1172,7 +1182,7 @@ if len(COMMAND_LINE_TARGETS) > 0 and 'uninstall' in COMMAND_LINE_TARGETS:
 # and they are exported here, as well.
 Export("env")
 Export("get_option")
-Export("has_option")
+Export("has_option use_system_version_of_library")
 Export("darwin windows solaris linux freebsd nix")
 Export("debugBuild optBuild")
 Export("use_clang")
