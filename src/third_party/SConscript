@@ -14,11 +14,10 @@ if use_system_version_of_library("boost"):
                         env['LIBDEPS_BOOST_SYSTEM_SYSLIBDEP']
                     ] )
 else:
+    print "DOING NORMAL THING"
     env.SConscript('boost/SConscript')
     env.Library( "shim_boost", ['shim_boost.cpp'],
-                 LIBDEPS=[ 'boost/boost_program_options',
-                           'boost/boost_filesystem',
-                           'boost/boost_thread',
+                 LIBDEPS=[ 'boost/boost_thread',
                            'boost/boost_system',
                            ] )
 
